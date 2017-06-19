@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<%@ Page language="C#" %>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css" />
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Kite+One" rel="stylesheet">
+
+
+<style>
+
+
+
+
+	.node {
+		cursor: pointer;
+	}
+
+	.node circle {
+		fill: #fff;
+		stroke: steelblue;
+		stroke-width: 1.5px;
+	}
+
+	.found {
+		fill: #ff4136;
+		stroke: #ff4136;
+	}
+	.node text {
+		font: 11px sans-serif;
+	}
+
+	.link {
+		fill: none;
+		stroke: #ccc;
+		stroke-width: 1.5px;
+	}
+	/*Just to ensure the select2 box is "glued" to the top*/
+	.search {
+	  width: 300px;
+	  display:inline-block;
+
+	}
+	.searchContainer {
+		width:100%;
+	}
+	
+	.select2-result-label, #select2-chosen-1, select2-choice {
+	  font-family:Arial, Helvetica, sans-serif !important;	
+	  font-size: 12px;
+	}
+
+	#webLink, #nodeDescription {
+	display:inline-block;
+		 /* font-family:Arial, Helvetica, sans-serif !important;	 */
+		 font-family: 'Kite One', sans-serif;
+	  font-size: 12px;
+	  padding-left:15px;
+
+	}
+
+	h2 {
+	 font-family: 'Kite One', sans-serif;
+	/* font-family:Arial, Helvetica, sans-serif; */
+	font-size:medium;
+	
+	}
+	
+	.searchTextDiv {
+			  font-family:Arial, Helvetica, sans-serif !important;	
+	  font-size: 12px;
+
+}
+
+#nodeInfo {
+	display:inline-block;
+	
+	}
+
+
+
+
+.notepad {
+
+	display:block;
+   /*  font-family: 'Handlee', cursive; */
+   position: absolute;
+   left: 400px;
+   top: 0;
+    padding: 25px 20px;
+    margin: 50px auto;
+    min-width: 200px;
+    max-width: 400px;
+    height: auto;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(0, 0, 0, 0.1);
+    transform: rotate(-4deg);
+    -ms-transform: rotate(-4deg);
+    -moz-transform: rotate(-4deg);
+    -o-transform: rotate(-4deg);
+    -webkit-transform: rotate(-4deg);
+    background: #fcf59b !important;
+	background:
+		-webkit-gradient(
+			linear,
+			left top, left bottom,
+			from(#81cbbc),
+			color-stop(2%, #fcf59b)
+		);
+	background:
+		-moz-repeating-linear-gradient(
+			top,
+			#fcf59b,
+			#fcf59b 38px,
+			#81cbbc 40px
+		);
+	background:
+		repeating-linear-gradient(
+			top,
+			#fcf59b,
+			#fcf59b 38px,
+			#81cbbc 40px
+		);		
+	-webkit-background-size: 50% 40px;
+}
+
+}
+	
+</style>
+
+
+<!-- This will be attached to select2, only static element on the page -->
+<h2>Tweed Shire Council SharePoint 2013 Hierarchy</h2>
+<div class="searchTextDiv">Search the hierarchy ...</div><div id="searchContainer"><div id="search">x</div><div class="notepad"><div id="nodeInfo"><div id="webLink">Click a node for links and info</div><span id="nodeDescription"></span></div></div></div>
+
+<!-- Main -->
+<script type="text/javascript">
+
+	//basically a way to get the path to an object
+	function searchTree(obj,search,path){
+		//root.removeClass("found");
+		//root.children.forEach(collapse);
+		//root.children.forEach.classed("found",false);
+		//d3.select(".found").classed("found",false);
+
+	
+		if(obj.name === search){ //if search is found return, add the object to the path and return it
+		//	path = [];
+			path.push(obj);
+			return path;
+		}
+		else if(obj.children || obj._children){ //if children are collapsed d3 object will have them instantiated as _children
+			var children = (obj.children) ? obj.children : obj._children;
+			for(var i=0;i<children.length;i++){
+				path.push(obj);// we assume this path is the right one
+				var found = searchTree(children[i],search,path);
+				if(found){// we were right, this should return the bubbled-up path from the first if statement
+					return found;
+				}
+				else{//we were wrong, remove this parent from the path and continue iterating
+					path.pop();
+				}
+			}
+		}
+		else{//not the right object, return false so it will continue to iterate in the loop
+			return false;
+		}
+	}
+
+
+
+function sortFunction(a, b) {
+    if (a[0] === b[0]) {
+        return 0;
+    }
+    else {
+        return (a[0] < b[0]) ? -1 : 1;
+    }
+}
+
+
+	function extract_select2_data(node,leaves,index){
+	        if (node.children){
+	            for(var i = 0;i<node.children.length;i++){
+	                index = extract_select2_data(node.children[i],leaves,index)[0];
+	            }
+	            leaves.push({id:++index,text:node.name});  //do the parent too
+
+	        }
+	        else {
+	            leaves.push({id:++index,text:node.name});
+	        }
+	       // myArray = sortFunction([index,leaves]);
+	       // console.log([index,leaves]);
+	     //  console.log(myArray);
+	        return [index, leaves];
+	       //return myArray;
+	}
+	//ie not body
+	var div = d3.select("body")
+		.append("div") // declare the tooltip div
+		.attr("class", "tooltip")
+		.style("opacity", 0);
+
+	var margin = {top: 20, right: 120, bottom: 20, left: 120},
+		width = 1250 - margin.right - margin.left,
+		height = 800 - margin.top - margin.bottom;
+
+	var i = 0,
+		duration = 750,
+		root,
+		select2_data;
+
+	var diameter = 960;
+
+	var tree = d3.layout.tree()
+		.size([height, width]);
+
+	var diagonal = d3.svg.diagonal()
+		.projection(function(d) { return [d.y, d.x]; });
+
+	var svg = d3.select("body").append("svg")
+		.attr("width", width + margin.right + margin.left)
+		.attr("height", height + margin.top + margin.bottom)
+		.attr("id", "tree")
+	  	.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	//recursively collapse children
+	function collapse(d) {
+		if (d.children) {
+			d._children = d.children;
+			d._children.forEach(collapse);
+			d.children = null;
+		}
+	}
+	
+		function removeclass(d) {
+		//if (d.children) {
+			//d._children = d.children;
+			//d._children.forEach(removeclass);
+			//d.children = null;
+			var myvar = d3.selectAll("svg.stroke").classed("found",null);
+			console.log(myvar);
+		//}
+		//d3.d.classed("found",false);
+	}
+
+
+	// Toggle children on click.
+	function click(d) {
+		if (d.children) {
+			d._children = d.children;
+			d.children = null;
+	  	}
+	  	else{
+			d.children = d._children;
+			d._children = null;
+	  	}
+	  	
+	  	var tempdesc = "";
+	  	var tempurl = "Click a node for links and info";
+	  	
+	  	if (d.desc) { tempdesc = d.desc; };
+	  	if (d.url) { tempurl = "Node clicked: <a href='"+d.url + "'>" + d.name + "</a>"; }
+	  	
+	  	
+	  	$("#nodeDescription").html(tempdesc);
+	  	$("#webLink").html(tempurl);
+		update(d);
+	}
+
+	function openPaths(paths){
+	
+			removeclass();
+		for(var i =0;i<paths.length;i++){
+			if(paths[i].id !== "1"){//i.e. not root
+				paths[i].class = 'found';
+				if(paths[i]._children){ //if children are hidden: open them, otherwise: don't do anything
+					paths[i].children = paths[i]._children;
+	    			paths[i]._children = null;
+				}
+				update(paths[i]);
+			}
+		}
+	}
+	
+	
+	
+	
+
+
+var data = {
+ "name": "TSC SharePoint",
+ "url": "http://srv-mbah-spdev:81",
+ "desc": "<- Click to visit Tweed Shire Council's development SharePoint 2013 website for project management and related activities",
+ "children": [
+  {
+   "name": "BrightWork Project and Portfolio Management System",
+   "url": "http://www.brightwork.com",
+   "desc": "Find out more about BrightWork on their website",
+   "children": [
+    {
+     "name": "Projects",
+     "url": "#",
+     "desc": "This is where you will find all active projects in BrightWork",
+     "children": [
+      {
+      	"name": "Built Infrastructure Projects", 
+      	"size": 3938,
+      	"url": "#",
+      	"desc": "<ul><li>BrightWork Template: <strong>TSC Built Infrastructure Template</strong></li><li>Project Control Group: (link to SP group)</li><li>Project Support: (link to SP group)</li></ul>",
+       "children": [
+      	{
+      		"name": "Building Related Projects", 
+      		"url": "#",
+      		"desc": "Click link to open the request manager form for building related infrastructure projects",
+      		"size": 3812,
+      		"children": [
+        	     	{
+        	     		"name": "Department: Community Services Buildings", 
+        	     		"size": 3812,
+        	     		"url": "#",
+        	     		"desc": "Projects related to buildings managed by the Community Services Unit.  Click the previous node to display a link to the form you must complete to start this type of project. <br/>Reviewer: Robynn Grigg<br />Approver: Tracey Stinson"
+        	     		},
+        	     	{"name": "Department: Depots", "size": 3812},
+      	     	    {"name": "Department: Design Buildings", "size": 3812},
+    	     	    {"name": "Department: Economic Development Buildings ", "size": 3812},
+    	     	    {"name": "Department: Emergency Buildings", "size": 3812},
+    	     	    {"name": "Department: Park Buildings", "size": 3812},
+    	     	    {"name": "Department: Waste Buildings", "size": 3812},
+    	     	    {"name": "Department: Water and Wastewater Buildings", "size": 3812}
+        	]
+
+      	},
+      	{
+      		"name": "Drainage Projects", 
+      		"size": 3812,
+      		 "children": [
+        	     	{"name": "Department: Flood Mitigation", "size": 3812},
+        	     	{"name": "Department: Stormwater", "size": 3812}
+        	]
+
+      	},
+      	{
+      	"name": "Natural Resources Infrastructure Projects", 
+      	"url": "#",
+      	"desc": "Click link to open the request manager form for natural resource built infrastructure projects",
+      	"size": 3812,
+      	 "children": [
+        	     	{"name": "Department: Biodiversity (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
+        	     	{"name": "Department: Coastal (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
+      	     	    {"name": "Department: Pest Management (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
+    	     	    {"name": "Department: Sustainable Agriculture (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
+    	     	    {"name": "Department: Sustainability (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
+    	     	    {"name": "Department: Waterways (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"}
+        	]
+
+      	},
+        {
+        "name": "Open Space Infrastructure Projects", 
+        "url": "#",
+        "desc": "Click link to open the request manager form for open space built infrastructure projects",
+        "size": 3812,
+  		"children": [
+        	     	{"name": "Department: Open space (Built Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Scott Letham<br />Approver: Matt McCann"}
+        	]
+       
+        },
+        {
+        	"name": "Road Projects", 
+        	"url": "#",
+        	"desc": "Click link to open the request manager form to register a new road project",
+        	"size": 3812,
+			"children": [
+        	     	{"name": "Department: Road Network Optimisation", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Road Maintenance", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Steve Paff<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Capital Infrastructure", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Road Safety", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Alana Brooks<br />Approver: Danny Rose"}
+        	]
+        	
+        },
+        {
+              "name": "Water and Wastewater Infrastructure Projects", 
+                	"url": "#",
+        	   "desc": "Click link to open the request manager form to register a new Water or Wastewater Infrastructure project. If this project relates to a stand-alone building only, use the Building Related project area of the hierarchy instead.",
+
+              "size": 3812,
+              "children": [
+        	     	{"name": "Department: Water (Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"},
+	        	    {"name": "Department: Wastewater (Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"}
+        	]
+
+        }
+      ]
+
+      },
+      {"name": "Management Projects", "size": 3812,
+      "children": [
+      	{"name": "Business Unit Planning Projects", "size": 3812},
+      	{"name": "Event Projects", "size": 3812},
+      	{"name": "Learning and Development Projects", "size": 3812},
+        {
+        	"name": "Strategy, Action Plan, Service Plan, Policy Projects", "size": 3812,
+        	"children": [
+        	     	{"name": "Start a project", "size": 3812},
+        	     	{"name": "Go to project area", "size": 3812}
+        	]
+        }
+
+      ]
+     },
+      {
+      "name": "Project Offices", "size": 6714,
+      "children": [
+      	{"name": "Ad hoc and Miscellaneous requests for Project Trackers and Offices", "size": 3812},
+      	{"name": "Holiday Parks Project Office", "size": 3812},
+      	{"name": "Information Technology Project Office", "size": 3812},
+       	{
+       		"name": "Strategic Planning and Urban Design Project Office", 
+       		"size": 3812,
+       		"children": [
+        	     	{"name": "Department: Development Control Plans", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
+	        	    {"name": "Department: LEP Amendments", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
+	        	    {"name": "Department: Strategic Plan, Heritage Plan, Locality Plan", "size": 3812, "url":"#", "desc": "<font color='red'>** Please enter a request for this type of project in the <strong>Strategy and Action Plan</strong> area of the BrightWork Hierarchy, and not from the SPUD project office**</font>"}
+        	]
+
+       	},
+        {"name": "Waste Management Project Office", "size": 3812}
+
+      ]
+
+      
+      }
+     ]
+    },
+    {
+     "name": "Portfolios",
+     "children": [
+      {"name": "Significant Projects", "size": 3534},
+      {"name": "Executive Portfolios", "size": 5731},
+      {"name": "Strategy Portfolios", "size": 7840},
+      {"name": "Personal Portfolios", "size": 5914}
+     ]
+    },
+    {
+     "name": "BrightWork Templates",
+     "children": [
+     	{
+     	"name": "Project Templates",
+     	 "children": [
+	      {"name": "TSC Strategy Project Template", "size": 7074},
+	      {"name": "TSC Infrastructure Project Template", "size": 7074},
+	      {"name": "TSC Planning Proposal Template", "size": 7074},
+	      {"name": "TSC Standard Project Template", "size": 7074},
+	      {"name": "TSC Lite Project Template", "size": 7074}
+	     ]
+		},
+		{ "name": "Special Templates",
+		   "children": [
+	      {"name": "TSC Project Request Manager Template", "size": 7074},
+	      {"name": "TSC Projects and Work Tracker Template", "size": 7074},
+	      {"name": "TSC Work Tracker Template", "size": 7074}
+	     ]
+
+		}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TSC Project Support",
+   "url": "http://srv-mbah-spdev:81/support",
+   "desc": "Site for project support - Design Services, Financial Activities, Procurement, Requests for Offer, etc",
+   "children": [
+       {
+     "name": "Home Site",
+	   "url": "http://srv-mbah-spdev:81/support",
+	   "desc": "Contains pages for CKB searching, data reports, etc.  Go to sub-sites for related services.",
+     "children": [
+      {"name": "Reporting Data Access", "size": 1983},
+      {"name": "Landing page for prospective users", "size": 1983},
+      {"name": "Explanatory Page with links to Request Manager Pages", "size": 1983},
+      {"name": "Knowledge Base Search", "size": 1983}
+     ]
+    },
+
+    {
+     "name": "Procurement",
+      "url": "http://srv-mbah-spdev:81/support/procurement",
+	   "desc": "Site for Request for Offer list and registration forms",
+
+     "children": [
+      {
+      	"name": "Request for Offer Form", 
+      	 "url": "http://srv-mbah-spdev:81/support/procurement/Lists/Requests%20For%20Offer/NewRFO.aspx",
+	   "desc": "Click to register a new Request for offer",
+
+      	"size": 1983
+      	}
+     ]
+    },
+
+    {
+     "name": "Design",
+      "url": "http://srv-mbah-spdev:81/support/design",
+	   "desc": "Site for Design Briefs and Safety in Design Process",
+
+     "children": [
+      {"name": "Design Brief Form and Process", "size": 1983},
+      {"name": "Safety In Design Forms and Process", "size": 2047}
+     ]
+    },
+    {
+     "name": "Finance",
+     "children": [
+      {"name": "Activity Number Request Form and Process", "size": 1983},
+      {"name": "Grant Details Form and List", "size": 2047}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Communities of Practice",
+   "children": [
+    {
+     "name": "Engineering",
+     "children": [
+      {"name": "Engineering Admin", "size": 721},
+      {"name": "Photos", "size": 4294},
+      {"name": "Social", "size": 9800}
+     ]
+    },
+    {
+     "name": "Infrastructure Planning",
+     "children": [
+    	 { "name": "Plan Repository and Administration"},
+         { "name": "Infrastructure Planning Community"},
+     ]
+    },
+    {
+     "name": "Skills Development",
+     "children": [
+      {"name": "Microsoft Office Applications", "size": 721},
+      {"name": "E-Learning", "size": 4294},
+      {"name": "Project Management", "size": 4294},
+      {"name": "Web Technologies", "size": 9800}
+     ]
+    }
+   ]
+  }
+ ]
+}
+
+
+	function redraw()
+	{
+	
+		removeclass();
+		root.children.forEach(collapse);
+
+		update(root);
+	
+		/* var node = svg.selectAll("g.node")
+			.data(nodes, function(d) { return d.id || (d.id = ++i); });
+			
+			node.selectAll("circle")
+			.attr("r", 4.5)
+			.style("fill", "lightsteelblue") //red
+			.style("stroke", "lightsteelblue");
+*/
+
+	}
+	
+	
+
+	//d3.json("spHierarchy.txt", function(error,values){
+		root = data;
+		select2_data = extract_select2_data(data,[],0)[1];//I know, not the prettiest...
+		
+		 select2_data = select2_data.sort(function(a, b){
+		    		            return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
+				});
+				
+		console.log($(select2_data));
+		root.x0 = height / 2;
+		root.y0 = 0;
+		root.children.forEach(collapse);
+		update(root);
+		//init search box
+		
+		$("#search").select2({
+		
+			data: select2_data,
+			containerCssClass: "search" 
+		}); 
+		
+	//attach search box listener
+	$("#search").on("select2-selecting", function(e) {
+		var paths = searchTree(root,e.object.text,[]);
+		if(typeof(paths) !== "undefined"){
+
+			openPaths(paths);
+		}
+		else{
+			alert(e.object.text+" not found!");
+		}
+	})
+
+	d3.select(self.frameElement).style("height", "800px");
+
+	function update(source) {
+		// Compute the new tree layout.
+		var nodes = tree.nodes(root).reverse(),
+		links = tree.links(nodes);
+
+		// Normalize for fixed-depth.
+		nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+		// Update the nodesâ€¦
+		var node = svg.selectAll("g.node")
+			.data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+		// Enter any new nodes at the parent's previous position.
+		var nodeEnter = node.enter().append("g")
+			.attr("class", "node")
+		.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+		.on("click", click);
+
+		nodeEnter.append("circle")
+		.attr("r", 1e-6)
+		.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+		nodeEnter.append("text")
+			.attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+			.attr("dy", ".35em")
+			.attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+			.text(function(d) { return d.name; })
+			.style("fill-opacity", 1e-6);
+
+		// Transition nodes to their new position.
+		var nodeUpdate = node.transition()
+			.duration(duration)
+			.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+		nodeUpdate.select("circle")
+			.attr("r", 4.5)
+			.style("fill", function(d) {
+				if(d.class === "found"){
+					return "#ff4136"; //red
+				}
+				else if(d._children){
+					return "lightsteelblue";
+				}
+				else{
+					return "#fff";
+				}
+			})
+			.style("stroke", function(d) {
+				if(d.class === "found"){
+					return "#ff4136"; //red
+				}
+				/*else if(d._children){
+					return "lightsteelblue";
+				}
+				else{
+					return "#fff";
+				}*/
+				
+		});
+
+		nodeUpdate.select("text")
+			.style("fill-opacity", 1);
+
+		// Transition exiting nodes to the parent's new position.
+		var nodeExit = node.exit().transition()
+			.duration(duration)
+			.attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+			.remove();
+
+		nodeExit.select("circle")
+			.attr("r", 1e-6);
+
+		nodeExit.select("text")
+			.style("fill-opacity", 1e-6);
+
+		// Update the linksâ€¦
+		var link = svg.selectAll("path.link")
+			.data(links, function(d) { return d.target.id; });
+
+		// Enter any new links at the parent's previous position.
+		link.enter().insert("path", "g")
+			.attr("class", "link")
+			.attr("d", function(d) {
+				var o = {x: source.x0, y: source.y0};
+				return diagonal({source: o, target: o});
+			});
+
+		// Transition links to their new position.
+		link.transition()
+			.duration(duration)
+			.attr("d", diagonal)
+			.style("stroke",function(d){
+				if(d.target.class==="found"){
+					return "#ff4136";
+				}
+			});
+
+		// Transition exiting nodes to the parent's new position.
+		link.exit().transition()
+			.duration(duration)
+			.attr("d", function(d) {
+				var o = {x: source.x, y: source.y};
+				return diagonal({source: o, target: o});
+			})
+			.remove();
+
+		// Stash the old positions for transition.
+		nodes.forEach(function(d) {
+			d.x0 = d.x;
+			d.y0 = d.y;
+		  });
+	}
+</script>
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
