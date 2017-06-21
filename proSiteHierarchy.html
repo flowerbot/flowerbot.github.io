@@ -131,6 +131,10 @@
 		cursor: move;
 }
 
+.deptnode {
+	forecolor: green;
+}
+
 }
 	
 </style>
@@ -267,14 +271,27 @@ function sortFunction(a, b) {
 	  	
 	  	var tempdesc = "";
 	  	var tempurl = "Click a node for links and info";
+	  	//var tempnodetype = "";
 	  	
 	  	if (d.desc) { tempdesc = d.desc; };
+	  
+	  	
 	  	if (d.url) { tempurl = "Node clicked: <a href='"+d.url + "' target='_blank'>" + d.name + "</a>"; }
+	  	//}
 	  	
 	  //	console.log("nodetype:" + d.nodetype);
+	  	/*
+	  	var codeStart = "";
+	  	var codeEnd = "";
 	  	
+	  		if (d.nodetype == "Department") 
+	  	{
+	  		codeStart = "<span class='deptnode'>";
+	  		codeEnd = "</span>";
+	  	}	
+	  	*/
 	  	
-	  	
+	  	//$("#nodeDescription").html(codeStart+tempdesc+codeEnd);
 	  	$("#nodeDescription").html(tempdesc);
 	  	$("#webLink").html(tempurl);
 		update(d);
@@ -324,11 +341,12 @@ var data = {
       	{
       		"name": "Building Related Projects", 
       		"url": "#",
-      		"desc": "Click link to open the request manager form for building related infrastructure projects",
+      		"desc": "Click link to open the request manager page to start, review or approve a new building related infrastructure project",
       		"size": 3812,
       		"children": [
         	     	{
         	     		"name": "Department: Community Services Buildings", 
+					    "nodetype":"Department",
         	     		"size": 3812,
         	     		"url": "#",
         	     		"desc": "Projects related to buildings managed by the Community Services Unit.  Click the previous node to display a link to the form you must complete to start this type of project. <br/>Reviewer: Robynn Grigg<br />Approver: Tracey Stinson"
@@ -346,36 +364,42 @@ var data = {
 			    "name": "Department: Design Buildings", 
 			    "size": 3812,
 			    "url": "#",
+			    "nodetype":"Department",
 			    "reviewer": "Paul Morgan",
 			    "approver": "David Oxenham",
 			    "desc":"Projects related to buildings where the Design Unit is the asset owner.  Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Paul Morgan<br />Approver: David Oxenham"
 		    },
     	     	    {
 			    "name": "Department: Economic Development Buildings ", 
+			    "nodetype":"Department",
 			    "size": 3812,
 			    "url": "#",
 			    "desc":"Projects related to buildings where Economic Development is the asset owner. Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Mark Tickle<br />Approver: Troy Green"
 		    },
     	     	    {
 			    "name": "Department: Emergency Buildings", 
+			    "nodetype":"Department",
 			    "size": 3812,
 			    "url": "#",
 			    "desc": "Projects related to buildings where Emergency Services is the asset owner. Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Doreen Harwood<br />Approver: Neil Baldwin"
 		    },
     	     	    {
 			    "name": "Department: Park Buildings", 
+			    "nodetype":"Department",
 			    "size": 3812,
 			    "url": "#",
 			    "desc": "Projects related to buildings where Recreation Services is the asset owner. Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Scott Letham<br />Approver: Matt McCann"
 		    },
     	     	    {
 			    "name": "Department: Waste Buildings", 
+			    "nodetype":"Department",
 			    "size": 3812,
 			    "url": "#",
 			    "desc": "Projects related to buildings where Waste is the asset owner. Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Rod Dawson<br />Approver: Tracey Stinson"
 		    },
     	     	    {
 			    "name": "Department: Water and Wastewater Buildings", 
+			    "nodetype":"Department",
 			    "size": 3812,
 			    "url": "#",
 			    "desc": "Projects related to buildings where Water and Wastewater is the asset owner. Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"
@@ -386,60 +410,72 @@ var data = {
       	{
       		"name": "Drainage Projects", 
 	      	"url": "#",
-	      	"desc": "Click link to open the request manager form for drainage infrastructure projects",
+	      	"desc": "Click link to open the request manager page to start, review or approve a new drainage infrastructure project",
       		"size": 3812,
       		 "children": [
-        	     	{"name": "Department: Flood Mitigation", "size": 3812},
-        	     	{"name": "Department: Stormwater", "size": 3812}
+        	     	{
+        	     		"name": "Department: Flood Mitigation", 
+					    "nodetype":"Department",
+        	     		"size": 3812,
+        	     		"url":"#",
+        	     		"desc":"Projects relating to flood mitigation infrastructure<br />Reviewer: Steve Twohill<br />Approver: Danny Rose"
+        	     		},
+        	     	{
+        	     		"name": "Department: Stormwater", 
+					    "nodetype":"Department",
+        	     		"size": 3812,
+        	     		"url":"#",
+        	     		"desc":"Projects relating to stormwater infrastructure<br />Reviewer: Steve Paff<br />Approver: Danny Rose"
+						}
         	]
 
       	},
       	{
       	"name": "Natural Resources Infrastructure Projects", 
       	"url": "#",
-      	"desc": "Click link to open the request manager form for natural resource built infrastructure projects",
+      	"desc": "Click link to open the request manager page to start, review or approve a new natural resource built infrastructure project",
       	"size": 3812,
       	 "children": [
-        	     	{"name": "Department: Biodiversity (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
-        	     	{"name": "Department: Coastal (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
-      	     	        {"name": "Department: Pest Management (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
-    	     	        {"name": "Department: Sustainable Agriculture (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
-    	     	        {"name": "Department: Sustainability (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"},
-    	     	        {"name": "Department: Waterways (Built Infrastructure)", "size": 3812, "desc": "Click the previous node to display a link to the form you must complete to start this type of project"}
+        	     	{"name": "Department: Biodiversity (Built Infrastructure)", "nodetype":"Department",  "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Mark Kingston/Scott Hetherington<br />Approver: Jane Lofthouse"},
+        	     	{"name": "Department: Coastal (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Matthew Lee<br />Approver: Jane Lofthouse"},
+      	     	        {"name": "Department: Pest Management (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Pamela Gray<br />Approver: Jane Lofthouse"},
+    	     	        {"name": "Department: Sustainable Agriculture (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Eli Szandala<br />Approver: Jane Lofthouse"},
+    	     	        {"name": "Department: Sustainability (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Debbie Firestone<br />Approver: Jane Lofthouse"},
+    	     	        {"name": "Department: Waterways (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#","desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Thomas Alletson<br />Approver: Jane Lofthouse"}
         	]
 
       	},
         {
         "name": "Open Space Infrastructure Projects", 
         "url": "#",
-        "desc": "Click link to open the request manager form for open space built infrastructure projects",
+        "desc": "Click link to open the request manager page to start, review or approve a new open space built infrastructure project",
         "size": 3812,
   		"children": [
-        	     	{"name": "Department: Open space (Built Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Scott Letham<br />Approver: Matt McCann"}
+        	     	{"name": "Department: Open space (Built Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Scott Letham<br />Approver: Matt McCann"}
         	]
        
         },
         {
         	"name": "Road Projects", 
         	"url": "#",
-        	"desc": "Click link to open the request manager form to register a new road project",
+        	"desc": "Click link to open the request manager page to start, review or approve a new road project",
         	"size": 3812,
 			"children": [
-        	     	{"name": "Department: Road Network Optimisation", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
-	        	    {"name": "Department: Road Maintenance", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Steve Paff<br />Approver: Danny Rose"},
-	        	    {"name": "Department: Capital Infrastructure", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
-	        	    {"name": "Department: Road Safety", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Alana Brooks<br />Approver: Danny Rose"}
+        	     	{"name": "Department: Road Network Optimisation", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Road Maintenance", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Steve Paff<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Capital Infrastructure", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Ray Clark<br />Approver: Danny Rose"},
+	        	    {"name": "Department: Road Safety", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Alana Brooks<br />Approver: Danny Rose"}
         	]
         	
         },
         {
               "name": "Water and Wastewater Infrastructure Projects", 
                 	"url": "#",
-        	   "desc": "Click link to open the request manager form to register a new Water or Wastewater Infrastructure project. If this project relates to a stand-alone building only, use the <strong>Building Related Project</strong. area of the hierarchy instead.",
+        	   "desc": "Click link to open the request manager page to start, review or approve a new Water or Wastewater Infrastructure project. If this project relates to a stand-alone building only, use the <strong>Building Related Project</strong. area of the hierarchy instead.",
               "size": 3812,
               "children": [
-        	     	{"name": "Department: Water (Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"},
-	        	    {"name": "Department: Wastewater (Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"}
+        	     	{"name": "Department: Water (Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"},
+	        	    {"name": "Department: Wastewater (Infrastructure)", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"}
         	]
 
         }
@@ -471,9 +507,9 @@ var data = {
        		"name": "Strategic Planning and Urban Design Project Office", 
        		"size": 3812,
        		"children": [
-        	     	{"name": "Department: Development Control Plans", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
-	        	    {"name": "Department: LEP Amendments", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
-	        	    {"name": "Department: Strategic Plan, Heritage Plan, Locality Plan", "size": 3812, "url":"#", "desc": "<font color='red'>** Please enter a request for this type of project in the <strong>Strategy and Action Plan</strong> area of the BrightWork Hierarchy, and not from the SPUD project office**</font>"}
+        	     	{"name": "Department: Development Control Plans", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
+	        	    {"name": "Department: LEP Amendments", "nodetype":"Department", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Robyn Eisermann<br />Approver: Iain Lonsdale"},
+	        	    {"name": "Department: Strategic Plan, Heritage Plan, Locality Plan", "nodetype":"Department", "size": 3812, "url":"#", "desc": "<font color='red'>** Please enter a request for this type of project in the <strong>Strategy and Action Plan</strong> area of the BrightWork Hierarchy, and not from the SPUD project office**</font>"}
         	]
 
        	},
@@ -629,9 +665,27 @@ var data = {
      "url":"http://srv-mbah-spdev:81/prac/eng/SitePages/Home.aspx",
      "desc":"Engineering community site for non-project information and activities",
      "children": [
-      {"name": "Engineering Admin", "size": 721},
-      {"name": "Photos (Engineering Community)", "size": 4294},
-      {"name": "Social (Engineering Community)", "size": 9800}
+      {
+      	"name": "Engineering Admin", 
+      	"size": 721,
+      	"url":"http://srv-mbah-spdev:81/prac/eng/SitePages/Engineering%20Admin.aspx",
+      	"desc":"Site for Engineering Admin (non project) processes and documentation.<br />Site Owner: Judith Finch"
+      	},
+     
+      {
+      	"name": "Social (Engineering Community)", 
+      	"size": 9800,
+      	"url":"http://srv-mbah-spdev:81/prac/eng/social/_layouts/15/start.aspx#/",
+      	"desc":"Site for organising and announcing engineering social activities</br />Site Owners: Sandra Zietlow/Linda Cooper",
+      	"children": [
+	      	 {
+	      	"name": "Photos (Engineering Social Community)", 
+	      	"size": 4294,
+	      	"url":"http://srv-mbah-spdev:81/prac/eng/social/Photos/Forms/Thumbnails.aspx",
+	      	"desc":"Library for historic, social and other (non project) photos"
+	      	}
+      	]
+      	}
      ]
     },
     {
@@ -639,8 +693,16 @@ var data = {
      "url":"http://srv-mbah-spdev:81/prac/infrastructure/SitePages/Home.aspx",
      "desc":"S94 Plan repository and S94 community/meetings site",
      "children": [
-    	 { "name": "Plan Repository and Administration (s94)"},
-         { "name": "Infrastructure Planning Meetings"},
+    	 {
+    	 	 "name": "Plan Repository and Administration (s94)",
+    	 	 "url":"http://srv-mbah-spdev:81/prac/infrastructure/SitePages/Home.aspx",
+    	 	 "desc":"Working repository for S94 Plans and nformation about the status of S94 plans."
+    	 	 },
+         { 
+         	"name": "Infrastructure Planning Meetings",
+         	"url":"http://srv-mbah-spdev:81/prac/infrastructure/community/SitePages/Home.aspx",
+         	"desc":"Meetings and community site for the Infrastructure Co-ordination Committee"
+         	},
      ]
     },
     {
@@ -650,16 +712,24 @@ var data = {
      "children": [
       {
       	"name": "Microsoft Office Applications", 
-      	"url": "",
-      	"desc":"",
+      	"url": "http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Home.aspx",
+      	"desc":"Self-join community site for getting help and sharing tips and techniques for Microsoft Office applications, including Excel, Word and SharePoint.",
       	"nodetype":"Community Site",
-      	"size": 721
+      	"size": 721,
+      	"children": [
+      		{ "name":"Excel (MS Office Applications Community)","url":"http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Category.aspx?CategoryID=4&SiteMapTitle=Excel","desc":"Discussion category for Excel on the Microsoft Office Applications community site." },
+      		{ "name":"Word (MS Office Applications Community)","url":"http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Category.aspx?CategoryID=3&SiteMapTitle=Word","desc":"Discussion category for MS Word on the Microsoft Office Applications community site." },
+      		{ "name":"PowerPoint (MS Office Applications Community)","url":"http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Category.aspx?CategoryID=5&SiteMapTitle=PowerPoint","desc":"Discussion category for PowerPoint on the Microsoft Office Applications community site." },
+      		{ "name":"MS Project (MS Office Applications Community)","url":"http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Category.aspx?CategoryID=6&SiteMapTitle=Project","desc":"Discussion category for MS Project on the Microsoft Office Applications community site." },
+      		{ "name":"SharePoint (MS Office Applications Community)","url":"http://srv-mbah-spdev:81/prac/skills/msoffice/SitePages/Category.aspx?CategoryID=2&SiteMapTitle=SharePoint","desc":"Discussion category for SharePoint on the Microsoft Office Applications community site." }
+      	]
       	},
       {
       	"name": "Learning and Development Community", 
       	"size": 4294,
       	"url":"http://srv-mbah-spdev:81/prac/skills/learndev/SitePages/Home.aspx",
-      	"desc":"Site for learning instructors and content creators",
+      	"nodetype":"Community Site",
+      	"desc":"Community site for learning instructors and content creators",
       	"children": [
       		{
       			"name": "E-Learning", 
@@ -669,14 +739,24 @@ var data = {
       			},
       		{
       			"name": "General (Learning and Development)", 
-      			"url": "#", 
-      			"desc":"yyy",
+      			"url": "http://srv-mbah-spdev:81/prac/skills/learndev/SitePages/Category.aspx?CategoryID=1&SiteMapTitle=General", 
+      			"desc":"General discussion category on the Learning and Development community site.",
       			"nodetype": "Discussion Category"
       			}
       	]
       	},
-      {"name": "Project Management", "size": 4294},
-      {"name": "Web Technologies", "size": 9800}
+      {
+      	"name": "Project Management", 
+      	"size": 4294,
+      	"url":"http://srv-mbah-spdev:81/prac/skills/pm/SitePages/Community%20Home.aspx",
+      	"desc":"Community site for learning and sharing knowledge about project management."
+      	},
+      {
+      	"name": "Web Technologies", 
+      	"size": 9800,
+      	"url":"http://srv-mbah-spdev:81/prac/skills/web/SitePages/Home.aspx",
+      	"desc":"Community site for learning and sharing knowledge about web technologies: HTML5, CSS, jquery, canvas, etc."
+      	}
      ]
     }
    ]
@@ -769,9 +849,20 @@ var data = {
 			.attr("dy", ".35em")
 			.attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
 			.text(function(d) { return d.name; })
-			.style("fill-opacity", 1e-6);
+			.style("fill-opacity", 1e-6)
+			.attr("fill", function(d) {
+			if (d.nodetype == "Department")
+			{ 
+				console.log(d.nodetype);
+			return "gray"; 
+			}
+			else
+			{
+				//return "pink";
+			}
+			});
 
-
+		
 
 		// Transition nodes to their new position.
 		var nodeUpdate = node.transition()
