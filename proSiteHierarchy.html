@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.css" />
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Kite+One" rel="stylesheet">
@@ -124,6 +125,10 @@
 			#81cbbc 40px
 		);		
 	-webkit-background-size: 50% 40px;
+}
+
+.notepad:hover {
+		cursor: move;
 }
 
 }
@@ -264,7 +269,10 @@ function sortFunction(a, b) {
 	  	var tempurl = "Click a node for links and info";
 	  	
 	  	if (d.desc) { tempdesc = d.desc; };
-	  	if (d.url) { tempurl = "Node clicked: <a href='"+d.url + "'>" + d.name + "</a>"; }
+	  	if (d.url) { tempurl = "Node clicked: <a href='"+d.url + "' target='_blank'>" + d.name + "</a>"; }
+	  	
+	  //	console.log("nodetype:" + d.nodetype);
+	  	
 	  	
 	  	
 	  	$("#nodeDescription").html(tempdesc);
@@ -329,12 +337,17 @@ var data = {
 			    "name": "Department: Depots", 
 			    "size": 3812,
 			    "url": "#",
+			    "nodetype":"Department",
+			    "reviewer":"Paul Morgan",
+			    "approver":"David Oxenham",
 			    "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Tim Mackney<br />Approver: David Oxenham"
 		    },
       	     	    {
 			    "name": "Department: Design Buildings", 
 			    "size": 3812,
 			    "url": "#",
+			    "reviewer": "Paul Morgan",
+			    "approver": "David Oxenham",
 			    "desc":"Projects related to buildings where the Design Unit is the asset owner.  Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Paul Morgan<br />Approver: David Oxenham"
 		    },
     	     	    {
@@ -372,6 +385,8 @@ var data = {
       	},
       	{
       		"name": "Drainage Projects", 
+	      	"url": "#",
+	      	"desc": "Click link to open the request manager form for drainage infrastructure projects",
       		"size": 3812,
       		 "children": [
         	     	{"name": "Department: Flood Mitigation", "size": 3812},
@@ -421,7 +436,6 @@ var data = {
               "name": "Water and Wastewater Infrastructure Projects", 
                 	"url": "#",
         	   "desc": "Click link to open the request manager form to register a new Water or Wastewater Infrastructure project. If this project relates to a stand-alone building only, use the <strong>Building Related Project</strong. area of the hierarchy instead.",
-
               "size": 3812,
               "children": [
         	     	{"name": "Department: Water (Infrastructure)", "size": 3812, "url":"#", "desc": "Click the previous node to display a link to the form you must complete to start this type of project.<br />Reviewer: Peter Pennycuick<br />Approver: Anthony Burnham"},
@@ -475,6 +489,8 @@ var data = {
      "name": "Portfolios",
      "children": [
       {"name": "Significant Projects", "size": 3534},
+      {"name": "Community Strategic Plan Portfolio (Public)", "size": 3534},
+      {"name": "Community Strategic Plan Portfolio (All)", "size": 3534},
       {"name": "Executive Portfolios", "size": 5731},
       {"name": "Strategy Portfolios", "size": 7840},
       {"name": "Personal Portfolios", "size": 5914}
@@ -511,14 +527,34 @@ var data = {
    "desc": "Site for project support - Design Services, Financial Activities, Procurement, Requests for Offer, etc",
    "children": [
        {
-     "name": "Home Site",
+     "name": "Home Site (Project Support)",
 	   "url": "http://srv-mbah-spdev:81/support",
 	   "desc": "Contains pages for CKB searching, data reports, etc.  Go to sub-sites for related services.",
      "children": [
-      {"name": "Reporting Data Access", "size": 1983},
-      {"name": "Landing page for prospective users", "size": 1983},
-      {"name": "Explanatory Page with links to Request Manager Pages", "size": 1983},
-      {"name": "Knowledge Base Search", "size": 1983}
+      {
+      	"name": "Reporting Data Access", 
+      	"url": "#",
+      	"desc": "Eg: Exported data from BrightWork to serve CKB search and CI Financials, plus imported data from CI Financials to be read by BrightWork. Removes need to allocate a BrightWork license for data import/export.",
+      	"size": 1983
+      	},
+      {
+      	"name": "Landing page for prospective users", 
+      	"url":"http://srv-mbah-spdev:81/support/SitePages/Home.aspx",
+      	"desc":"Landing page with useful links to project support forms and pages.",
+      	"size": 1983
+      	},
+      {
+      	"name": "Explanatory Page with links to Request Manager Pages", 
+      	"size": 1983,
+      	"url": "http://srv-mbah-spdev:81/support/SitePages/Start%20a%20project.aspx",
+      	"desc": "Open a page of links to start any type of project"
+      	},
+      {
+      	"name": "Knowledge Base Search", 
+      	"url":"http://srv-mbah-spdev:81/support/SitePages/ProjectDetailsCKBwithLink.aspx",
+      	"desc":"Combined project server and BrightWork project info to enable CKB searching across all projects (nb: example only includes imported Project Server data at this stage).",
+      	"size": 1983
+      	}
      ]
     },
 
@@ -532,9 +568,15 @@ var data = {
       	"name": "Request for Offer Form", 
       	 "url": "http://srv-mbah-spdev:81/support/procurement/Lists/Requests%20For%20Offer/NewRFO.aspx",
 	   "desc": "Click to register a new Request for offer",
-
+      	"size": 1983
+      	},
+       {
+      	"name": "Request for Offer List", 
+      	 "url": "http://srv-mbah-spdev:81/support/procurement/Lists/Requests%20For%20Offer/My%20RFOs.aspx",
+	   "desc": "Click to view the Requests for Offer List",
       	"size": 1983
       	}
+     	
      ]
     },
 
@@ -544,15 +586,37 @@ var data = {
 	   "desc": "Site for Design Briefs and Safety in Design Process",
 
      "children": [
-      {"name": "Design Brief Form and Process", "size": 1983},
-      {"name": "Safety In Design Forms and Process", "size": 2047}
+      {
+      	"name": "Design Brief Form and Process", 
+      	"size": 1983,
+      	"url":"http://srv-mbah-spdev:81/support/design/Lists/Design%20Briefs/NewDesignBrief.aspx",
+      	"desc":"Click the link to register a new Design Brief."
+      	},
+      {
+      	"name": "Safety In Design Forms and Process", 
+      	"url":"http://srv-mbah-spdev:81/support/design/Lists/Safety%20In%20Design%20Process/Tiles.aspx",
+      	"desc":"Click the link to go to the Safety In Design Process page.",
+      	"size": 2047
+      	}
      ]
     },
     {
      "name": "Finance",
+     "url":"http://srv-mbah-spdev:81/support/finance/SitePages/Home.aspx",
+     "desc":"Financial activities associated with projects - creation of activity numbers and recording of grant applications.  Click the link to visit the Finance SharePoint.",
      "children": [
-      {"name": "Activity Number Request Form and Process", "size": 1983},
-      {"name": "Grant Details Form and List", "size": 2047}
+      {
+      	"name": "Activity Number Request Form", 
+      	"url": "http://srv-mbah-spdev:81/support/finance/Lists/Activity%20Number%20Requests/NewActNumRequest.aspx",
+      	"desc": "Click the link to register a new Activity Number Request for your project",
+      	"size": 1983
+      	},
+      {
+      	"name": "Grant Details Form", 
+      	"url": "http://srv-mbah-spdev:81/support/finance/Lists/Grant%20Details/NewForm.aspx",
+      	"desc":"Click the link to register your grant application",
+      	"size": 2047
+      	}
      ]
     }
    ]
@@ -562,24 +626,55 @@ var data = {
    "children": [
     {
      "name": "Engineering",
+     "url":"http://srv-mbah-spdev:81/prac/eng/SitePages/Home.aspx",
+     "desc":"Engineering community site for non-project information and activities",
      "children": [
       {"name": "Engineering Admin", "size": 721},
-      {"name": "Photos", "size": 4294},
-      {"name": "Social", "size": 9800}
+      {"name": "Photos (Engineering Community)", "size": 4294},
+      {"name": "Social (Engineering Community)", "size": 9800}
      ]
     },
     {
      "name": "Infrastructure Planning",
+     "url":"http://srv-mbah-spdev:81/prac/infrastructure/SitePages/Home.aspx",
+     "desc":"S94 Plan repository and S94 community/meetings site",
      "children": [
-    	 { "name": "Plan Repository and Administration"},
-         { "name": "Infrastructure Planning Community"},
+    	 { "name": "Plan Repository and Administration (s94)"},
+         { "name": "Infrastructure Planning Meetings"},
      ]
     },
     {
      "name": "Skills Development",
+     "url":"http://srv-mbah-spdev:81/prac/skills/SitePages/Home.aspx",
+     "desc":"SharePoint sites for application help, skills development and knowledge sharing",
      "children": [
-      {"name": "Microsoft Office Applications", "size": 721},
-      {"name": "E-Learning", "size": 4294},
+      {
+      	"name": "Microsoft Office Applications", 
+      	"url": "",
+      	"desc":"",
+      	"nodetype":"Community Site",
+      	"size": 721
+      	},
+      {
+      	"name": "Learning and Development Community", 
+      	"size": 4294,
+      	"url":"http://srv-mbah-spdev:81/prac/skills/learndev/SitePages/Home.aspx",
+      	"desc":"Site for learning instructors and content creators",
+      	"children": [
+      		{
+      			"name": "E-Learning", 
+      			"url":"http://srv-mbah-spdev:81/prac/skills/learndev/SitePages/Category.aspx?CategoryID=2&SiteMapTitle=E%2DLearning", 
+      			"desc":"Discussion category for e-learning on the Learning and Development community site.",
+      			"nodetype": "Discussion Category" 
+      			},
+      		{
+      			"name": "General (Learning and Development)", 
+      			"url": "#", 
+      			"desc":"yyy",
+      			"nodetype": "Discussion Category"
+      			}
+      	]
+      	},
       {"name": "Project Management", "size": 4294},
       {"name": "Web Technologies", "size": 9800}
      ]
@@ -588,6 +683,7 @@ var data = {
   }
  ]
 }
+
 
 
 	function redraw()
@@ -675,6 +771,8 @@ var data = {
 			.text(function(d) { return d.name; })
 			.style("fill-opacity", 1e-6);
 
+
+
 		// Transition nodes to their new position.
 		var nodeUpdate = node.transition()
 			.duration(duration)
@@ -757,6 +855,11 @@ var data = {
 			d.x0 = d.x;
 			d.y0 = d.y;
 		  });
-	}
-</script>
+	};
+	
+	$(document).ready( function() {
+	$(".notepad").draggable();
+	});
 
+	
+</script>
