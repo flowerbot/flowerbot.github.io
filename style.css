@@ -18,10 +18,6 @@
 	================================================
 	*/
 
-
-
-
-
 	/* ---------------------------------------------------------------------------------------------------------- 
 	01 Sensible defaults ----------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------------------- */
@@ -67,9 +63,9 @@
 	textarea 						{ color:#333; /*-webkit-font-smoothing:antialiased;*/ } 
 
 	/* Families */
-	body							{ font-family: "TabletGothicCondensedW01-Lt", "Open Sans Condensed", "tablet-gothic-condensed", "arial narrow", verdana, arial, sans-serif; /* Weights from Typekit: 300, 400 */ }
+	body							{ font-family:"tablet-gothic", verdana, arial, sans-serif; /* Weights from Typekit: 300, 400 */ }
 	h2,
-	h3 								{ font-family: "TabletGothicCondensedW01-Lt", "Open Sans Condensed", "tablet-gothic-condensed", "arial narrow", arial, verdana, sans-serif; /* Weights from Typekit: 200, 900 */ }
+	h3 								{ font-family:"tablet-gothic-condensed", "arial narrow", arial, verdana, sans-serif; /* Weights from Typekit: 200, 900 */ }
 
 	/* Headings */
 	h1,
@@ -143,7 +139,8 @@
 
 		h2 							{ font-size:8em; }
 		section.intro 				{ width:66.6%; }
-		aside.sidebar 				{ position:absolute; right:0; top:2.5%; width:32.75%; }
+/*		aside.sidebar 				{ position:absolute; right:0; top:2.5%; width:32.75%; } */
+		aside.sidebar 				{ position:absolute; right:0; top:2.5%; }
 		div.extra1 					{ background:rgba(51,55,69,0.9); bottom:0; right:0; position:fixed; top:0; width:30%; z-index:1; }
 		div.explanation 			{ float:left; width:50%; }
 		div.participation 			{ float:left; width:49%; }
