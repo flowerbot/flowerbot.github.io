@@ -67,9 +67,9 @@
 	textarea 						{ color:#333; /*-webkit-font-smoothing:antialiased;*/ } 
 
 	/* Families */
-	body							{ font-family: "Open Sans Condensed", "TabletGothicCondensedW01-Lt", "tablet-gothic-condensed", "arial narrow", verdana, arial, sans-serif; /* Weights from Typekit: 300, 400 */ }
+	body							{ font-family: "TabletGothicCondensedW01-Lt", "Open Sans Condensed", "tablet-gothic-condensed", "arial narrow", verdana, arial, sans-serif; /* Weights from Typekit: 300, 400 */ }
 	h2,
-	h3 								{ font-family: "Open Sans Condensed", "TabletGothicCondensedW01-Lt", "tablet-gothic-condensed", "arial narrow", arial, verdana, sans-serif; /* Weights from Typekit: 200, 900 */ }
+	h3 								{ font-family: "TabletGothicCondensedW01-Lt", "Open Sans Condensed", "tablet-gothic-condensed", "arial narrow", arial, verdana, sans-serif; /* Weights from Typekit: 200, 900 */ }
 
 	/* Headings */
 	h1,
