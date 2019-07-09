@@ -6,21 +6,92 @@
 
   <link rel='stylesheet' type='text/css' href='style.css'></link>
   
-</head>
-<html>
-<body>
-<div class="page-wrapper">
-  <section class="intro">
-    <h1>I did this</h1>
-<h2><abbr>My Stuff</abbr> on GitHub</h2>
+  <script src="http://use.typekit.net/lxq7gid.js"></script>
+	<style type="text/css">.tk-tablet-gothic{font-family:"tablet-gothic",sans-serif;}.tk-tablet-gothic-condensed{font-family:"tablet-gothic-condensed",sans-serif;}</style><style type="text/css">@font-face{font-family:tablet-gothic;src:url(https://use.typekit.net/af/9e2513/000000000000000000014357/27/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/9e2513/000000000000000000014357/27/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/9e2513/000000000000000000014357/27/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;}@font-face{font-family:tablet-gothic;src:url(https://use.typekit.net/af/3d0569/000000000000000000014355/27/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3d0569/000000000000000000014355/27/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3d0569/000000000000000000014355/27/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;}@font-face{font-family:tablet-gothic-condensed;src:url(https://use.typekit.net/af/502f24/000000000000000000014397/27/l?subset_id=2&fvd=n9&v=3) format("woff2"),url(https://use.typekit.net/af/502f24/000000000000000000014397/27/d?subset_id=2&fvd=n9&v=3) format("woff"),url(https://use.typekit.net/af/502f24/000000000000000000014397/27/a?subset_id=2&fvd=n9&v=3) format("opentype");font-weight:900;font-style:normal;}@font-face{font-family:tablet-gothic-condensed;src:url(https://use.typekit.net/af/1f1dc8/00000000000000000001438b/27/l?subset_id=2&fvd=n2&v=3) format("woff2"),url(https://use.typekit.net/af/1f1dc8/00000000000000000001438b/27/d?subset_id=2&fvd=n2&v=3) format("woff"),url(https://use.typekit.net/af/1f1dc8/00000000000000000001438b/27/a?subset_id=2&fvd=n2&v=3) format("opentype");font-weight:200;font-style:normal;}</style><script>try{Typekit.load();}catch(e){}</script>
 
+	<!--[if lt IE 9]>
+	<script src="script/html5shiv.js"></script>
+	<![endif]-->
+<style type="text/css">.backpack.dropzone {
+  font-family: 'SF UI Display', 'Segoe UI';
+  font-size: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 150px;
+  font-weight: lighter;
+  color: white;
+  will-change: right;
+  z-index: 2147483647;
+  bottom: 20%;
+  background: #333;
+  position: fixed;
+  user-select: none;
+  transition: left .5s, right .5s;
+  right: 0px; }
+  .backpack.dropzone .animation {
+    height: 80px;
+    width: 250px;
+    background: url("chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/assets/backpack/dropzone/hoverstate.png") left center; }
+  .backpack.dropzone .title::before {
+    content: 'Save to'; }
+  .backpack.dropzone.closed {
+    right: -250px; }
+  .backpack.dropzone.hover .animation {
+    animation: sxt-play-anim-hover 0.91s steps(21);
+    animation-fill-mode: forwards;
+    background: url("chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/assets/backpack/dropzone/hoverstate.png") left center; }
+
+@keyframes sxt-play-anim-hover {
+  from {
+    background-position: 0px; }
+  to {
+    background-position: -5250px; } }
+  .backpack.dropzone.saving .title::before {
+    content: 'Saving to'; }
+  .backpack.dropzone.saving .animation {
+    background: url("chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/assets/backpack/dropzone/saving_loop.png") left center;
+    animation: sxt-play-anim-saving steps(59) 2.46s infinite; }
+
+@keyframes sxt-play-anim-saving {
+  100% {
+    background-position: -14750px; } }
+  .backpack.dropzone.saved .title::before {
+    content: 'Saved to'; }
+  .backpack.dropzone.saved .animation {
+    background: url("chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/assets/backpack/dropzone/saved.png") left center;
+    animation: sxt-play-anim-saved steps(20) 0.83s forwards; }
+
+@keyframes sxt-play-anim-saved {
+  100% {
+    background-position: -5000px; } }
+</style>
+</head>
+
+<html>
+<body id="css-zen-garden">
+ 
+<div class="page-wrapper">
+ 
+  <section class="intro" id="zen-intro">
+    <header role="banner">
+    <h1>I did this</h1>
+<h2><abbr title="Standing on the shoulders of giants">My Stuff</abbr> on GitHub</h2>
+</header>
+<div class="summary" id="zen-summary" role="article">
+    This is just the tip of a rather large iceberg - I'm storing some of my latest work for future reference and posterity on GitHub, apologies if you find it messy, I leave in the notes and commented mistakes in a lot of my code to remind me how I got there.  
+</div>
 <div class="preamble" id="zen-preamble" role="article">
     <h3>Treechange, before it was a thing</h3>
-    <p>When I quit my job and went off-grid back in the 80s, spookily anticipating the financial meltdown about to temporarily impede the accumulation of wealth of my bosses and cut their number of sailing days, little did I realise that I would soon find salve for the psychic wounds I left the city with via the rickety phone line that made its way up the mountain and through the trees to my cabin deep in the woods. </p><p> As unlikely as it seems, it was from there that I discovered a world that was the opposite of the one I came from -- it was open, sharing and collaborative, if a little wild, the internet found me, and I thus began my exploration of the universe. Now I was at last permitted to 'know' the things my various overlords were adamant I shouldn't concern myself with.  How awesome.  A virtual cornucopia for the disillusioned yet curious.  </p> <p>I didn't have electricity, but I had access to knowledge.  In the days before social media.  Even better.  </p>
+    <p>When I quit my job and went off-grid back in the 80s, spookily anticipating the financial meltdown about to temporarily impede the accumulation of wealth of my bosses and cut their number of sailing days, little did I realise that I would soon find salve for the psychic wounds I left the city with via the rickety phone line that made its way up the mountain and through the trees to my cabin deep in the woods. </p><p> As unlikely as it seems, it was from there that I discovered a world that was the opposite of the one I came from -- it was open, sharing and collaborative, if a little wild, the internet found me, and I thus began my exploration of the universe. Now I was at last permitted to 'know' the things my various overlords were adamant I shouldn't concern myself with.  How awesome.  A virtual cornucopia for the disillusioned yet curious.  </p> <p>I didn't have electricity, but I had access to knowledge.  In the days before social media.  How fortunate was I.  </p>
    
   </div>
+  
 
-  </div>
+
 </section>
 <div class="main supporting" id="zen-supporting" role="main">
   <div class="explanation" id ="zen-explanation" role="article">
@@ -30,32 +101,48 @@
    
     
    </div>
-   <div class="participation" id="zen-participation" role="article">
+   
+
+
+ 
+   <footer> </footer>
+   <div class="participation" role="requirements">
       <h3>Daily inspiration</h3>
       <p>I'm so thankful that the open, collaborative ethos that was the early internet existed -- it continues to educate, inspire and motivate me in my daily work and interactions. </p>
         <p>I'm also thankful for the people I've worked with over the years who have allowed me to use my talents for good, in spite of what my position description might not have said, and am especially thankful to all those who have advocated for recognition of my contribution, in whatever form that has taken.</p>
         <p>Wherever possible, I choose not to reinvent the wheel for its own sake, although I note since I started others have reinvented it many times - so many new things to learn, every day.  </p>
- 
-   <p>This is just the tip of a rather large iceberg - I'm storing some of my latest work for future reference and posterity on GitHub, apologies if you find it messy, I leave in the notes and commented mistakes in a lot of my code to remind me how I got there.  </p>
    </div>
-   </div>
-   <footer>Credits: <a href='http://www.csszengarden.com/217/'>CSS Styles-Zen Garden</a> </footer>
-
- 
+   <footer>Credits: <a href='http://www.csszengarden.com/217/'><abbr title="Apologies for the flakey implementation :)">CSS Styles</abbr>-Zen Garden</a> </footer>
   </div>
-  <aside class="sidebar" role="complementary"> 
-      <div class="wrapper">
-      <ul>
-        <li><a href='https://flowerbot.github.io/d3-task-planner/planner.htm' target='_blank'>D3 Task Planner</a></li>
-        <li><a href='https://flowerbot.github.io/d3-sp-tree/' target='_blank'>D3 project site hierarchy</a></li>
-        <li><a href='https://flowerbot.github.io/neverwinter-insignia/' target='_blank'>Neverwinter insignia</a></li>
-        <li><a href='https://github.com/flowerbot/acrobat-bookmarks' target='_blank'>Acrobat bookmarking javascript *</a></li>
-        <li><a href=''>spfx (SharePoint Framework) template including cascading content lookup *</a></li>
-        <li><a href=''>Project Cost Monitoring translated into spfx for SharePoint 2019 *</a></li>
-      </ul>
-      <p>* Private repository, contact me for access</p>
+
+
+   <div class="extra1" role="presentation">
+
+      <aside class="sidebar" role="complementary"> 
+          <div class="wrapper">
+              <div class="zen-resources" id="zen-resources">
+                  <h3 class="resources">Repos:</h3>
+
+          <ul>
+            <li><a class='design-name' href='https://flowerbot.github.io/d3-task-planner/planner.htm' target='_blank'>D3 Task Planner</a></li>
+            <li><a href='https://flowerbot.github.io/d3-sp-tree/' target='_blank'>D3 project site hierarchy</a></li>
+            <li><a href='https://flowerbot.github.io/neverwinter-insignia/' target='_blank'>Neverwinter insignia</a></li>
+            <li><a href='https://github.com/flowerbot/acrobat-bookmarks' target='_blank'>Acrobat bookmarking javascript *</a></li>
+            <li><a href=''>spfx (SharePoint Framework) template including cascading content lookup *</a></li>
+            <li><a href=''>Project Cost Monitoring translated into spfx for SharePoint 2019 *</a></li>
+          </ul>
+
+
+        <p>* Private repository, contact me for access</p>
       </div>
-    </aside>
+    </div>
+        </aside>
+      </div>
+ 
+
+  
+ 
+
 
 </body>
 </html>
